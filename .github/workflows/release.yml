@@ -2,8 +2,9 @@ name: Build and Release
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - master
+      - main
 
 permissions:
   contents: write
@@ -28,16 +29,22 @@ jobs:
       - name: Create package tarball
         run: npm pack
       
-      - name: Get package version
-        id: package-version
-        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: Get package info
+        id: package-info
+        run: |
+          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+          echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
+          echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: build-${{ steps.package-info.outputs.short_sha }}
+          name: Build ${{ steps.package-info.outputs.short_sha }}
           files: |
-            ics-${{ steps.package-version.outputs.version }}.tgz
+            ${{ steps.package-info.outputs.name }}-${{ steps.package-info.outputs.version }}.tgz
           generate_release_notes: true
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
