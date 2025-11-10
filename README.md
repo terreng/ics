@@ -1,4 +1,4 @@
-ics
+ics 
 ==================
 
 The [iCalendar](http://tools.ietf.org/html/rfc5545) generator
