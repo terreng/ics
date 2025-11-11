@@ -81,12 +81,12 @@ export function formatEvent(attributes = {}) {
   icsFormat += foldLine(`DTSTAMP:${encodeNewLines(formatDate(timestamp))}`) + '\r\n'
 
   // All day events like anniversaries must be specified as VALUE type DATE
-  icsFormat += foldLine(`DTSTART${start && start.length == 3 ? ";VALUE=DATE" : ""}${formatTzidParam(startTimezone)}:${encodeNewLines(formatDate(start, (startTimezone && 'local') || startOutputType || startType, startInputType))}`) + '\r\n'
+  icsFormat += foldLine(`DTSTART${start && start.length == 3 ? ";VALUE=DATE" : ""}${start && start.length == 3 ? "" : formatTzidParam(startTimezone)}:${encodeNewLines(formatDate(start, (startTimezone && 'local') || startOutputType || startType, startInputType))}`) + '\r\n'
 
   // End is not required for all day events on single days (like anniversaries)
   if (!end || end.length !== 3 || start.length !== end.length || start.some((val, i) => val !== end[i])) {
     if (end) {
-      icsFormat += foldLine(`DTEND${end.length === 3 ? ";VALUE=DATE" : ""}${formatTzidParam(endTimezone)}:${encodeNewLines(formatDate(end, (endTimezone && 'local') || endOutputType || startOutputType || startType, endInputType || startInputType))}`) + '\r\n'
+      icsFormat += foldLine(`DTEND${end.length === 3 ? ";VALUE=DATE" : ""}${end.length === 3 ? "" : formatTzidParam(endTimezone)}:${encodeNewLines(formatDate(end, (endTimezone && 'local') || endOutputType || startOutputType || startType, endInputType || startInputType))}`) + '\r\n'
     }
   }
 

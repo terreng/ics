@@ -201,7 +201,7 @@ describe('pipeline.formatEvent', () => {
     })
     const formattedEvent = formatEvent(event)
     // match against \r\n to ensure times are written in local time (no 'Z' at the end)
-    expect(formattedEvent).to.contain('DTSTART;VALUE=DATE;TZID=Europe/Zurich:20241116\r\n')
+    expect(formattedEvent).to.contain('DTSTART;VALUE=DATE:20241116\r\n')
     expect(formattedEvent).to.contain('DTEND;TZID=America/Chicago:20241116T195432\r\n')
     expect(formattedEvent).to.contain('EXDATE;TZID=Africa/Nairobi:20240506T153621,20240721T093807\r\n')
   })
